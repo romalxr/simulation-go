@@ -28,7 +28,7 @@ func NewWorldMap(width, height int) *WorldMap {
 	}
 }
 
-func (wm *WorldMap) Generate(numGrass int) {
+func (wm *WorldMap) Generate(tile Occupier, numGrass int) {
 	totalCells := wm.width * wm.height
 	if numGrass > totalCells {
 		numGrass = totalCells
@@ -40,7 +40,7 @@ func (wm *WorldMap) Generate(numGrass int) {
 		y := rand.Intn(wm.height)
 		pos := Position{X: x, Y: y}
 		if _, exists := wm.data[pos]; !exists {
-			wm.data[pos] = NewGrass()
+			wm.data[pos] = tile
 			placed++
 		}
 	}

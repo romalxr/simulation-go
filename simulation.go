@@ -1,5 +1,10 @@
 package main
 
+import (
+	. "simulation/entity"
+	"time"
+)
+
 type Simulation struct {
 	worldMap *WorldMap
 	renderer *Renderer
@@ -7,7 +12,9 @@ type Simulation struct {
 
 func NewSimulation() *Simulation {
 	wm := NewWorldMap(10, 10)
-	wm.Generate(10)
+	wm.Generate(NewGrass(), 10)
+	wm.Generate(NewTree(), 3)
+	wm.Generate(NewRock(), 2)
 	return &Simulation{
 		worldMap: wm,
 		renderer: NewRenderer(wm),
@@ -15,5 +22,8 @@ func NewSimulation() *Simulation {
 }
 
 func (s *Simulation) run() {
-	s.renderer.Render()
+	for i := 0; i < 10; i++ {
+		s.renderer.Render()
+		time.Sleep(200 * time.Millisecond)
+	}
 }
