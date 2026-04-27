@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	. "simulation/position"
+	"simulation/position"
+	"simulation/world"
 )
 
 type Renderer struct {
-	worldMap WorldMapView
+	worldMap world.WorldMapView
 }
 
-func NewRenderer(worldMap WorldMapView) *Renderer {
+func NewRenderer(worldMap world.WorldMapView) *Renderer {
 	return &Renderer{worldMap}
 }
 
@@ -29,7 +30,7 @@ func (r *Renderer) printMap() {
 
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
-			occupier := r.worldMap.GetTile(Position{x, y})
+			occupier := r.worldMap.GetTile(position.Position{X: x, Y: y})
 			icon := "|_"
 			if occupier != nil {
 				icon = occupier.Symbol()

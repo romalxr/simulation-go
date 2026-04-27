@@ -1,29 +1,48 @@
 package main
 
 import (
-	. "simulation/entity"
-	. "simulation/position"
+	"simulation/action"
+	"simulation/entity"
+	"simulation/position"
+	"simulation/world"
 	"time"
 )
 
 type Simulation struct {
-	worldMap *WorldMap
-	renderer *Renderer
+	worldMap    *world.WorldMap
+	renderer    *Renderer
+	initActions []action.Action
 }
 
 func NewSimulation() *Simulation {
 
-	wm := NewWorldMap(10, 10)
-	wm.Generate(NewGrass(Position{}), 10)
-	wm.Generate(NewTree(Position{}), 3)
-	wm.Generate(NewRock(Position{}), 2)
+	wm := world.NewWorldMap(10, 10)
+
+	initActions := []action.Action{
+		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
+			return entity.NewGrass(pos)
+		}, 10),
+		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
+			return entity.NewTree(pos)
+		}, 3),
+		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
+			return entity.NewRock(pos)
+		}, 2),
+	}
+
 	return &Simulation{
-		worldMap: wm,
-		renderer: NewRenderer(wm),
+		worldMap:    wm,
+		renderer:    NewRenderer(wm),
+		initActions: initActions,
 	}
 }
 
-func (s *Simulation) run() {
+func (s *Simulation) Start() {
+
+	for _, action := range s.initActions {
+		action.Execute(s.worldMap)
+	}
+
 	for i := 0; i < 10; i++ {
 		s.renderer.Render()
 		time.Sleep(200 * time.Millisecond)

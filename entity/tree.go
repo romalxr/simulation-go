@@ -24,7 +24,3 @@ func (t *Tree) Symbol() string {
 func (t *Tree) Position() Position {
 	return t.position
 }
-
-func (t *Tree) MoveTo(pos Position) Occupier {
-	return NewTree(pos)
-}

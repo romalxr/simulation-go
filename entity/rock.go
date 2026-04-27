@@ -24,7 +24,3 @@ func (r *Rock) Symbol() string {
 func (r *Rock) Position() Position {
 	return r.position
 }
-
-func (r *Rock) MoveTo(pos Position) Occupier {
-	return NewRock(pos)
-}

@@ -7,5 +7,5 @@ func main() {
 	fmt.Println("")
 
 	Simulation := NewSimulation()
-	Simulation.run()
+	Simulation.Start()
 }

@@ -24,7 +24,3 @@ func (g *Grass) Symbol() string {
 func (g *Grass) Position() Position {
 	return g.position
 }
-
-func (g *Grass) MoveTo(pos Position) Occupier {
-	return NewGrass(pos)
-}
