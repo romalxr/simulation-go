@@ -1,11 +1,16 @@
 package entity
 
+import (
+	. "simulation/position"
+)
+
 type Grass struct {
 	entityType EntityType
+	position   Position
 }
 
-func NewGrass() *Grass {
-	return &Grass{entityType: TypeGrass}
+func NewGrass(pos Position) *Grass {
+	return &Grass{entityType: TypeGrass, position: pos}
 }
 
 func (g *Grass) Type() EntityType {
@@ -14,4 +19,12 @@ func (g *Grass) Type() EntityType {
 
 func (g *Grass) Symbol() string {
 	return "🌿"
+}
+
+func (g *Grass) Position() Position {
+	return g.position
+}
+
+func (g *Grass) MoveTo(pos Position) Occupier {
+	return NewGrass(pos)
 }

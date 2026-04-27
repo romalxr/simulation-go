@@ -1,17 +1,30 @@
 package entity
 
+import (
+	. "simulation/position"
+)
+
 type Tree struct {
 	entityType EntityType
+	position   Position
 }
 
-func NewTree() *Tree {
-	return &Tree{entityType: TypeTree}
+func NewTree(pos Position) *Tree {
+	return &Tree{entityType: TypeTree, position: pos}
 }
 
-func (g *Tree) Type() EntityType {
-	return g.entityType
+func (t *Tree) Type() EntityType {
+	return t.entityType
 }
 
-func (g *Tree) Symbol() string {
+func (t *Tree) Symbol() string {
 	return "🌳"
+}
+
+func (t *Tree) Position() Position {
+	return t.position
+}
+
+func (t *Tree) MoveTo(pos Position) Occupier {
+	return NewTree(pos)
 }

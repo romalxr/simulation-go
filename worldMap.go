@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	. "simulation/entity"
+	. "simulation/position"
 )
 
 type WorldMapView interface {
@@ -40,7 +41,7 @@ func (wm *WorldMap) Generate(tile Occupier, numGrass int) {
 		y := rand.Intn(wm.height)
 		pos := Position{X: x, Y: y}
 		if _, exists := wm.data[pos]; !exists {
-			wm.data[pos] = tile
+			wm.data[pos] = tile.MoveTo(pos)
 			placed++
 		}
 	}

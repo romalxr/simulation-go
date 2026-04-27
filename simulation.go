@@ -2,6 +2,7 @@ package main
 
 import (
 	. "simulation/entity"
+	. "simulation/position"
 	"time"
 )
 
@@ -11,10 +12,11 @@ type Simulation struct {
 }
 
 func NewSimulation() *Simulation {
+
 	wm := NewWorldMap(10, 10)
-	wm.Generate(NewGrass(), 10)
-	wm.Generate(NewTree(), 3)
-	wm.Generate(NewRock(), 2)
+	wm.Generate(NewGrass(Position{}), 10)
+	wm.Generate(NewTree(Position{}), 3)
+	wm.Generate(NewRock(Position{}), 2)
 	return &Simulation{
 		worldMap: wm,
 		renderer: NewRenderer(wm),

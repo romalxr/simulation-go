@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	. "simulation/position"
+)
 
 type Renderer struct {
 	worldMap WorldMapView
