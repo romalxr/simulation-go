@@ -8,4 +8,5 @@ type Occupier interface {
 	Type() EntityType
 	Symbol() string
 	Position() Position
+	SetPosition(Position)
 }

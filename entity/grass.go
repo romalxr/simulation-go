@@ -18,9 +18,13 @@ func (g *Grass) Type() EntityType {
 }
 
 func (g *Grass) Symbol() string {
-	return "🌿"
+	return "\U0001F33F" // grass
 }
 
 func (g *Grass) Position() Position {
 	return g.position
+}
+
+func (g *Grass) SetPosition(pos Position) {
+	g.position = pos
 }

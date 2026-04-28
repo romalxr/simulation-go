@@ -8,4 +8,8 @@ func main() {
 
 	Simulation := NewSimulation()
 	Simulation.Start()
+
+	fmt.Println("")
+	fmt.Println("===Bye, bye===")
+	fmt.Println("")
 }

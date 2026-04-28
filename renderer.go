@@ -14,11 +14,10 @@ func NewRenderer(worldMap world.WorldMapView) *Renderer {
 	return &Renderer{worldMap}
 }
 
-func (r *Renderer) Render() {
+func (r *Renderer) Render(turn int) {
 	// Clear screen
 	fmt.Print("\033[2J\033[H")
 
-	turn := 1
 	fmt.Printf("=== Simulation Turn %d ===\n", turn)
 
 	r.printMap()
@@ -39,4 +38,5 @@ func (r *Renderer) printMap() {
 		}
 		fmt.Println("")
 	}
+	fmt.Println("Enter 'p' to pause/resume or 'q' to exit")
 }

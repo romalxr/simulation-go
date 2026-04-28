@@ -18,9 +18,13 @@ func (r *Rock) Type() EntityType {
 }
 
 func (r *Rock) Symbol() string {
-	return "🪨"
+	return "\U0001FAA8" // rock
 }
 
 func (r *Rock) Position() Position {
 	return r.position
+}
+
+func (r *Rock) SetPosition(pos Position) {
+	r.position = pos
 }

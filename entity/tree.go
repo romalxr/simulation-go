@@ -18,9 +18,13 @@ func (t *Tree) Type() EntityType {
 }
 
 func (t *Tree) Symbol() string {
-	return "🌳"
+	return "\U0001F333" // tree
 }
 
 func (t *Tree) Position() Position {
 	return t.position
+}
+
+func (t *Tree) SetPosition(pos Position) {
+	t.position = pos
 }

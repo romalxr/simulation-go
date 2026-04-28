@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"simulation/action"
 	"simulation/entity"
 	"simulation/position"
 	"simulation/world"
+	"sync/atomic"
 	"time"
 )
 
@@ -12,6 +14,10 @@ type Simulation struct {
 	worldMap    *world.WorldMap
 	renderer    *Renderer
 	initActions []action.Action
+	turnActions []action.Action
+	isPaused    atomic.Bool
+	turn        int
+	isStopped   atomic.Bool
 }
 
 func NewSimulation() *Simulation {
@@ -28,12 +34,20 @@ func NewSimulation() *Simulation {
 		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
 			return entity.NewRock(pos)
 		}, 2),
+		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
+			return entity.NewHerbivore(pos, 5)
+		}, 5),
+	}
+
+	turnActions := []action.Action{
+		action.NewRandomMoveAction(),
 	}
 
 	return &Simulation{
 		worldMap:    wm,
 		renderer:    NewRenderer(wm),
 		initActions: initActions,
+		turnActions: turnActions,
 	}
 }
 
@@ -43,8 +57,50 @@ func (s *Simulation) Start() {
 		action.Execute(s.worldMap)
 	}
 
-	for i := 0; i < 10; i++ {
-		s.renderer.Render()
-		time.Sleep(200 * time.Millisecond)
+	go s.handleCommands()
+
+	s.turn = 0
+	s.isPaused.Store(false)
+
+	for {
+		if s.isStopped.Load() {
+			break
+		}
+		if !s.isPaused.Load() {
+			s.NextTurn()
+		}
+		time.Sleep(500 * time.Millisecond)
+	}
+}
+
+func (s *Simulation) NextTurn() {
+
+	for _, act := range s.turnActions {
+		act.Execute(s.worldMap)
+	}
+	s.turn++
+	s.renderer.Render(s.turn)
+}
+
+func (s *Simulation) Pause() {
+	s.isPaused.Store(!s.isPaused.Load())
+}
+
+func (s *Simulation) Stop() {
+	s.isStopped.Store(true)
+}
+
+func (s *Simulation) handleCommands() {
+	var cmd string
+
+	for {
+		fmt.Scanln(&cmd)
+
+		switch cmd {
+		case "p":
+			s.Pause()
+		case "q":
+			s.Stop()
+		}
 	}
 }
