@@ -42,6 +42,10 @@ func (wm *WorldMap) SetTile(pos Position, occ Occupier) {
 	wm.tiles[pos] = occ
 }
 
+func (wm *WorldMap) RemoveTile(pos Position) {
+	delete(wm.tiles, pos)
+}
+
 func (wm *WorldMap) GetAll() []Occupier {
 	res := make([]Occupier, 0, len(wm.tiles))
 

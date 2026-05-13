@@ -7,4 +7,5 @@ const (
 	TypeRock      EntityType = "rock"
 	TypeTree      EntityType = "tree"
 	TypeHerbivore EntityType = "herbivore"
+	TypePredator  EntityType = "predator"
 )

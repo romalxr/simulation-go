@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"simulation/action"
 	"simulation/entity"
 	"simulation/position"
@@ -35,11 +36,19 @@ func NewSimulation() *Simulation {
 			return entity.NewRock(pos)
 		}, 2),
 		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
-			return entity.NewHerbivore(pos, 5)
+			speed := 2 + rand.Intn(4)
+			return entity.NewHerbivore(pos, speed, 50)
 		}, 5),
+		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
+			speed := 1 + rand.Intn(4)
+			return entity.NewPredator(pos, speed, 50, 20)
+		}, 3),
 	}
 
 	turnActions := []action.Action{
+		action.NewUpdateCooldownAction(),
+		action.NewEatGrassAction(),
+		action.NewAttackAction(),
 		action.NewRandomMoveAction(),
 	}
 

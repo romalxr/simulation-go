@@ -7,14 +7,14 @@ import (
 	"simulation/world"
 )
 
-type RandomMoveAction struct {
+type EatGrassAction struct {
 }
 
-func NewRandomMoveAction() *RandomMoveAction {
-	return &RandomMoveAction{}
+func NewEatGrassAction() *EatGrassAction {
+	return &EatGrassAction{}
 }
 
-func (a *RandomMoveAction) Execute(wm *world.WorldMap) {
+func (a *EatGrassAction) Execute(wm *world.WorldMap) {
 	directions := []position.Position{
 		{X: 0, Y: -1}, // up
 		{X: 0, Y: 1},  // down
@@ -23,21 +23,26 @@ func (a *RandomMoveAction) Execute(wm *world.WorldMap) {
 	}
 
 	for _, occ := range wm.GetAll() {
-		creature, ok := occ.(entity.Creature)
+		herbivore, ok := occ.(*entity.Herbivore)
 		if !ok {
 			continue
 		}
 
-		if creature.Cooldown() > 0 {
+		if herbivore.Cooldown() > 0 {
 			continue
 		}
 
-		oldPos := creature.Position()
+		pos := herbivore.Position()
 
 		var available []position.Position
 		for _, dir := range directions {
-			newPos := position.Position{X: oldPos.X + dir.X, Y: oldPos.Y + dir.Y}
-			if wm.IsValid(newPos) && wm.IsEmpty(newPos) {
+			newPos := position.Position{X: pos.X + dir.X, Y: pos.Y + dir.Y}
+			if wm.IsValid(newPos) && !wm.IsEmpty(newPos) {
+				neighbor := wm.GetTile(newPos)
+				_, ok := neighbor.(*entity.Grass)
+				if !ok {
+					continue
+				}
 				available = append(available, newPos)
 			}
 		}
@@ -45,8 +50,9 @@ func (a *RandomMoveAction) Execute(wm *world.WorldMap) {
 		if len(available) > 0 {
 			randomIndex := rand.Intn(len(available))
 			newPos := available[randomIndex]
-			wm.MoveTile(oldPos, newPos)
-			creature.SetCooldown(creature.Speed())
+			wm.RemoveTile(newPos)
+
+			herbivore.SetCooldown(herbivore.Speed())
 		}
 	}
 }

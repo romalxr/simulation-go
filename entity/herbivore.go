@@ -8,10 +8,12 @@ type Herbivore struct {
 	entityType EntityType
 	position   Position
 	speed      int
+	cooldown   int
+	hitPoints  int
 }
 
-func NewHerbivore(pos Position, speed int) *Herbivore {
-	return &Herbivore{entityType: TypeHerbivore, position: pos, speed: speed}
+func NewHerbivore(pos Position, speed int, hp int) *Herbivore {
+	return &Herbivore{entityType: TypeHerbivore, position: pos, speed: speed, hitPoints: hp}
 }
 
 func (h *Herbivore) Type() EntityType {
@@ -32,4 +34,20 @@ func (h *Herbivore) SetPosition(pos Position) {
 
 func (h *Herbivore) Speed() int {
 	return h.speed
+}
+
+func (h *Herbivore) Cooldown() int {
+	return h.cooldown
+}
+
+func (h *Herbivore) SetCooldown(cd int) {
+	h.cooldown = cd
+}
+
+func (h *Herbivore) Hp() int {
+	return h.hitPoints
+}
+
+func (h *Herbivore) SetHp(hp int) {
+	h.hitPoints = hp
 }
