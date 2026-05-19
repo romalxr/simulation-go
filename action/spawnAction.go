@@ -1,7 +1,6 @@
 package action
 
 import (
-	"math/rand"
 	"simulation/entity"
 	"simulation/position"
 	"simulation/world"
@@ -26,11 +25,8 @@ func (a *SpawnAction) Execute(wm *world.WorldMap) {
 
 	placed := 0
 	for placed < a.count {
-		x := rand.Intn(width)
-		y := rand.Intn(height)
-		pos := position.Position{X: x, Y: y}
-		if wm.GetTile(pos) == nil {
-			wm.SetTile(pos, a.factory(pos))
+		if pos := wm.GetRandomEmptyPos(); pos != nil {
+			wm.SetTile(*pos, a.factory(*pos))
 			placed++
 		}
 	}

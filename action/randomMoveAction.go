@@ -1,6 +1,7 @@
 package action
 
 import (
+	"log"
 	"math/rand"
 	"simulation/entity"
 	"simulation/position"
@@ -29,6 +30,7 @@ func (a *RandomMoveAction) Execute(wm *world.WorldMap) {
 		}
 
 		if creature.Cooldown() > 0 {
+			log.Printf("RandomMoveAction: Существо %s %p на кулдауне %d", creature.Type(), creature, creature.Cooldown())
 			continue
 		}
 
@@ -47,6 +49,9 @@ func (a *RandomMoveAction) Execute(wm *world.WorldMap) {
 			newPos := available[randomIndex]
 			wm.MoveTile(oldPos, newPos)
 			creature.SetCooldown(creature.Speed())
+			log.Printf("RandomMoveAction: Существо %s %p нашли след шаг", creature.Type(), creature)
+		} else {
+			log.Printf("RandomMoveAction: Существо %s %p не нашли след шаг", creature.Type(), creature)
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package action
 
 import (
+	"log"
 	"math/rand"
 	"simulation/entity"
 	"simulation/position"
@@ -29,6 +30,7 @@ func (a *AttackAction) Execute(wm *world.WorldMap) {
 		}
 
 		if predator.Cooldown() > 0 {
+			log.Printf("AttackAction: Существо %s %p на кулдауне %d", predator.Type(), predator, predator.Cooldown())
 			continue
 		}
 
@@ -62,7 +64,10 @@ func (a *AttackAction) Execute(wm *world.WorldMap) {
 				wm.RemoveTile(newPos)
 			}
 
+			log.Printf("AttackAction: Существо %s %p атаковало", predator.Type(), predator)
 			predator.SetCooldown(herbivore.Speed())
+		} else {
+			log.Printf("AttackAction: Существо %s %p не атаковало", predator.Type(), predator)
 		}
 	}
 }

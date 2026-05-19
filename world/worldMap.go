@@ -2,6 +2,7 @@ package world
 
 import (
 	"errors"
+	"math/rand"
 	. "simulation/entity"
 	. "simulation/position"
 )
@@ -76,5 +77,21 @@ func (wm *WorldMap) MoveTile(from, to Position) error {
 	delete(wm.tiles, from)
 	wm.tiles[to] = occ
 	occ.SetPosition(to)
+	return nil
+}
+
+func (wm *WorldMap) GetRandomEmptyPos() *Position {
+	width := wm.GetWidth()
+	height := wm.GetHeight()
+	maxAttempts := 100
+
+	for i := 0; i < maxAttempts; i++ {
+		x := rand.Intn(width)
+		y := rand.Intn(height)
+		pos := Position{X: x, Y: y}
+		if wm.IsEmpty(pos) {
+			return &pos
+		}
+	}
 	return nil
 }

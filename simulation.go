@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"simulation/action"
 	"simulation/entity"
@@ -23,12 +24,12 @@ type Simulation struct {
 
 func NewSimulation() *Simulation {
 
-	wm := world.NewWorldMap(10, 10)
+	wm := world.NewWorldMap(10, 20)
 
 	initActions := []action.Action{
 		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
 			return entity.NewGrass(pos)
-		}, 10),
+		}, 20),
 		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
 			return entity.NewTree(pos)
 		}, 3),
@@ -41,7 +42,7 @@ func NewSimulation() *Simulation {
 		}, 5),
 		action.NewSpawnAction(func(pos position.Position) entity.Occupier {
 			speed := 1 + rand.Intn(4)
-			return entity.NewPredator(pos, speed, 50, 20)
+			return entity.NewPredator(pos, speed, 70, 20)
 		}, 3),
 	}
 
@@ -49,7 +50,9 @@ func NewSimulation() *Simulation {
 		action.NewUpdateCooldownAction(),
 		action.NewEatGrassAction(),
 		action.NewAttackAction(),
+		action.NewSeekMoveAction(),
 		action.NewRandomMoveAction(),
+		action.NewRespawnAction(10, 5),
 	}
 
 	return &Simulation{
@@ -84,6 +87,7 @@ func (s *Simulation) Start() {
 
 func (s *Simulation) NextTurn() {
 
+	log.Printf("Simulation: Выполняется ход %d", s.turn)
 	for _, act := range s.turnActions {
 		act.Execute(s.worldMap)
 	}
